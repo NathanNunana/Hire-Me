@@ -4,7 +4,7 @@ import 'package:hire_me/utils/_index.dart';
 void main() {
   HiremeConfig(
     values: HiremeValues(
-      baseDomain: '',
+      baseDomain: 'http://127.0.0.1:8000/api', //replace baseDomain
       authBox: 'hiremeAuth',
     ),
   );
