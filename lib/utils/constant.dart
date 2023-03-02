@@ -1,5 +1,6 @@
 part of hireme_utils;
 
+// hire me constant values
 class HiremeValues {
   HiremeValues({
     required this.baseDomain,
@@ -10,6 +11,7 @@ class HiremeValues {
   final String authBox;
 }
 
+// hire me configuration
 class HiremeConfig {
   factory HiremeConfig({required HiremeValues values}) {
     return _instance ??= HiremeConfig._internal(values);
