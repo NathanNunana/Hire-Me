@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hire_me/utils/_index.dart';
 
-void main() => runApp(const HireMe());
+void main() {
+  HiremeConfig(
+    values: HiremeValues(
+      baseDomain: '',
+      authBox: 'hiremeAuth',
+    ),
+  );
+
+  return runApp(const HireMe());
+}
 
 class HireMe extends StatelessWidget {
   const HireMe({super.key});
