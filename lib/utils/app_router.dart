@@ -5,10 +5,13 @@ class AppRouter {
   static const String initRoute = "/";
 
   // handling generation of route
-  static Route<dynamic> _generate(RouteSettings settings) {
+  static Route<dynamic> generate(RouteSettings settings) {
     switch (settings.name) {
       case initRoute:
-        return _route(const MyHomePage(title: ""), initRoute);
+        return _route(
+          const HomeScreen(),
+          initRoute,
+        );
       default:
         return _route(
             Scaffold(
