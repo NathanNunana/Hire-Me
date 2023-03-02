@@ -31,7 +31,7 @@ class AppTheme {
       ..accentDark = const Color(0xff0E7CC9)
       ..txt = const Color(0xff000000)
       ..accentTxt = const Color(0xff8C8C8C)
-      ..negativeTxt = const Color(0xffFFFFFF);
+      ..negativeTxt = const Color(0xffFFFFFf);
   }
 
   // light theme colors
