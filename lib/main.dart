@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hire_me/utils/_index.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   HiremeConfig(
@@ -9,7 +10,12 @@ void main() {
     ),
   );
 
-  return runApp(const HireMe());
+  return runApp(
+    MultiProvider(
+      providers: Singleton.registerProvider(),
+      child: const HireMe(),
+    ),
+  );
 }
 
 class HireMe extends StatelessWidget {
