@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: const [
           SearchBar(),
-          Center(child: Text("Hire Me")),
+          // Center(child: Text("Hire Me")),
         ],
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
