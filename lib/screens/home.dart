@@ -40,7 +40,7 @@ class _CustomBottomNavigationBar extends State<CustomBottomNavigationBar> {
         BottomNavigationBarItem(
             label: 'Message', icon: Icon(CupertinoIcons.chat_bubble)),
         BottomNavigationBarItem(
-            label: 'Message', icon: Icon(CupertinoIcons.person)),
+            label: 'Profile', icon: Icon(CupertinoIcons.person)),
       ],
       onTap: (val) {},
     );
