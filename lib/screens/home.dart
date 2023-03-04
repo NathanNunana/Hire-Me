@@ -1,17 +1,64 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hire_me/widgets/company_card.dart';
+import 'package:hire_me/widgets/job_card.dart';
 import 'package:hire_me/widgets/search_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  Widget _buildHeader(context) {
+    return ListTile(
+      leading: const CircleAvatar(
+        radius: 25,
+      ),
+      title: const Text(
+        "Good Morning 👋",
+        style: TextStyle(
+          color: Colors.black54,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      subtitle: const Text(
+        "Nathan Nunana",
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w600,
+          fontSize: 19,
+        ),
+      ),
+      trailing: Container(
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          border: Border.all(
+            color: Colors.black12,
+          ),
+          borderRadius: BorderRadius.circular(50.0),
+        ),
+        child: const IconButton(
+          onPressed: null,
+          icon: Icon(
+            CupertinoIcons.bell,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: const [
-          SearchBar(),
-          // Center(child: Text("Hire Me")),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildHeader(context),
+            const SearchBar(),
+            const CompanyCard(),
+            const JobCard(),
+            // Center(child: Text("Hire Me")),
+          ],
+        ),
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
     );
