@@ -1,5 +1,7 @@
 part of hireme_utils;
 
 class Singleton {
-  static List _registerProvider() => [];
+  static List<Provider> registerProvider() => [
+        Provider<JobProvider>(create: (_) => JobProvider()),
+      ];
 }
