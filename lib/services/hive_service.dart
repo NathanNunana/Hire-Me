@@ -14,7 +14,13 @@ abstract class HiveService {
 class HiveServiceImpl implements HiveService {
   @override
   Future initBoxes() async {
-    // TODO: implement initialize hive box
+    try {
+      await Hive.initFlutter();
+      Hive.registerAdapter(ProfileAdapter());
+      // TODO: register the other adapters
+    } catch (err) {
+      throw Exception(err);
+    }
   }
 
   @override
