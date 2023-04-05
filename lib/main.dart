@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hire_me/services/_index.dart';
 import 'package:hire_me/utils/_index.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,9 @@ class HireMe extends StatelessWidget {
     return MaterialApp(
       title: 'Hire Me',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
+      theme: ThemeData(
+        textTheme: GoogleFonts.nunitoTextTheme(),
+      ),
       initialRoute: AppRouter.initRoute,
       onGenerateRoute: AppRouter.generate,
     );

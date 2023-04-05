@@ -3,5 +3,6 @@
     "dotenv",
     "hireme",
     "supabase"
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

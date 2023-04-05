@@ -3,6 +3,7 @@ part of hireme_utils;
 class AppRouter {
   // routes
   static const String initRoute = "/";
+  static const String homeRoute = "/home";
   static const String detailsRoute = "/details";
   static const String editProfile = "/editProfile";
 
@@ -11,8 +12,13 @@ class AppRouter {
     switch (settings.name) {
       case initRoute:
         return _route(
-          const LandingScreen(),
+          const SignIn(),
           initRoute,
+        );
+      case homeRoute:
+        return _route(
+          const LandingScreen(),
+          homeRoute,
         );
       case detailsRoute:
         return _route(
