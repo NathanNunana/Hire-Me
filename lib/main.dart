@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hire_me/services/_index.dart';
 import 'package:hire_me/utils/_index.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HiremeConfig(
     values: HiremeValues(
       baseDomain: 'http://127.0.0.1:8000/api', //replace baseDomain
       authBox: 'hiremeAuth',
     ),
   );
+
+  await HiveServiceImpl().initBoxes();
 
   return runApp(
     MultiProvider(

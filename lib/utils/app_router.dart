@@ -3,14 +3,26 @@ part of hireme_utils;
 class AppRouter {
   // routes
   static const String initRoute = "/";
+  static const String detailsRoute = "/details";
+  static const String editProfile = "/editProfile";
 
   // handling generation of route
   static Route<dynamic> generate(RouteSettings settings) {
     switch (settings.name) {
       case initRoute:
         return _route(
-          const HomeScreen(),
+          const LandingScreen(),
           initRoute,
+        );
+      case detailsRoute:
+        return _route(
+          const JobDescription(),
+          detailsRoute,
+        );
+      case editProfile:
+        return _route(
+          const EditProfile(),
+          editProfile,
         );
       default:
         return _route(

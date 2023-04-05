@@ -1,11 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class JobCard extends StatelessWidget {
-  const JobCard({super.key});
+  final String? title, subTitle, salaryRange, country, jobType, location;
+  const JobCard({
+    super.key,
+    this.country,
+    this.salaryRange,
+    this.subTitle,
+    this.title,
+    this.jobType,
+    this.location,
+  });
+
+  _buildChip(text) {
+    return Container(
+      padding: const EdgeInsets.all(5.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.black38),
+          borderRadius: BorderRadius.circular(5)),
+      child: Text(text),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container();
+    return Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15.0,
+          vertical: 10.0,
+        ),
+        margin: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black12,
+            ),
+            borderRadius: BorderRadius.circular(30)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black12,
+                    ),
+                    borderRadius: BorderRadius.circular(18)),
+                child: const Icon(
+                  Icons.facebook,
+                  color: Colors.blue,
+                ),
+              ),
+              title: Text(
+                title.toString(),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              subtitle: Text(subTitle.toString()),
+              trailing: const Icon(
+                CupertinoIcons.bookmark,
+                size: 20,
+              ),
+            ),
+            const Divider(
+              color: Colors.black26,
+            ),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                country.toString(),
+                style: const TextStyle(
+                  fontSize: 17,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                salaryRange.toString(),
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Wrap(
+                spacing: 8,
+                children: [
+                  _buildChip(jobType),
+                  _buildChip(location),
+                ],
+              )
+            ])
+          ],
+        ));
   }
 }

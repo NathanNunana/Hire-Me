@@ -7,8 +7,8 @@ abstract class HiveService {
   void persistToken(String token);
   String? retrieveToken();
 
-  void persistProfile();
-  // Profile retrieveProfile();
+  void persistProfile(Profile profile);
+  Profile? retrieveProfile();
 }
 
 class HiveServiceImpl implements HiveService {
@@ -18,28 +18,64 @@ class HiveServiceImpl implements HiveService {
       await Hive.initFlutter();
       Hive.registerAdapter(ProfileAdapter());
       // TODO: register the other adapters
-    } catch (err) {
-      throw Exception(err);
+      await Hive.openBox<dynamic>(HiremeConfig.instance!.values.authBox);
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
   @override
   void clearPref() {
-    // TODO: implement clear preferences
+    try {
+      Hive.box<dynamic>(HiremeConfig.instance!.values.authBox)
+          .deleteAll(<String>[
+        'accessToken',
+        'profile',
+      ]);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
   void persistToken(String token) {
-    // TODO: implement persistToken
+    try {
+      Hive.box<dynamic>(HiremeConfig.instance!.values.authBox)
+          .put('accessToken', token);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
   String? retrieveToken() {
-    // TODO: implement retrieve token
+    try {
+      final box = Hive.box<dynamic>(HiremeConfig.instance!.values.authBox);
+      return box.get('accessToken') as String?;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
-  void persistProfile() {
-    // TODO: implement persist profile
+  void persistProfile(Profile profile) {
+    try {
+      Hive.box<dynamic>(HiremeConfig.instance!.values.authBox)
+          .put('newProfile', profile);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Profile? retrieveProfile() {
+    try {
+      final box = Hive.box<dynamic>(HiremeConfig.instance!.values.authBox);
+      final profile = box.get('newProfile') as Profile?;
+      if (profile == null) return null;
+      return profile;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

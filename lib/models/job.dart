@@ -1,5 +1,20 @@
 part of hireme_models;
 
 class Job {
-  // TODO: write model for job attributes here
+  final String? title;
+  final String? subTitle;
+  final String? description;
+  final String? country;
+  final String? jobType;
+  final String? location;
+  final String? salaryRange;
+
+  Job(
+      {this.title,
+      this.subTitle,
+      this.salaryRange,
+      this.location,
+      this.jobType,
+      this.description,
+      this.country});
 }
