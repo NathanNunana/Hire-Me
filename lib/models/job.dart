@@ -9,12 +9,13 @@ class Job {
   final String? location;
   final String? salaryRange;
 
-  Job(
-      {this.title,
-      this.subTitle,
-      this.salaryRange,
-      this.location,
-      this.jobType,
-      this.description,
-      this.country});
+  Job({
+    this.title,
+    this.subTitle,
+    this.salaryRange,
+    this.location,
+    this.jobType,
+    this.description,
+    this.country,
+  });
 }
