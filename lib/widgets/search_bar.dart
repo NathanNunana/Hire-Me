@@ -30,19 +30,21 @@ class Search extends SearchDelegate {
   List<Job> data = [
     Job(
       title: "UI/UX Designer",
-      subTitle: "Google LLC",
-      country: "Carlifornia, United State",
-      salaryRange: "\$10,000 - \$25,000 /month",
-      jobType: "Full Time",
-      location: "Remote",
+      company: "Google LLC",
+      location: "Carlifornia, United State",
+      minSalary: 10000,
+      maxSalary: 25000,
+      contractTime: "Full Time",
+      contractType: "Remote",
     ),
     Job(
       title: "Web Developer",
-      subTitle: "Facebook LLC",
-      country: "Carlifornia, United State",
-      salaryRange: "\$12,000 - \$30,000 /month",
-      jobType: "Full Time",
-      location: "Remote",
+      company: "Facebook LLC",
+      location: "Carlifornia, United State",
+      minSalary: 12000,
+      maxSalary: 30000,
+      contractTime: "Full Time",
+      contractType: "Remote",
     )
   ];
   @override
@@ -74,11 +76,12 @@ class Search extends SearchDelegate {
       itemCount: suggestions.length,
       itemBuilder: (context, index) => JobCard(
           title: suggestions[index].title,
-          country: suggestions[index].country,
-          jobType: suggestions[index].jobType,
           location: suggestions[index].location,
-          salaryRange: suggestions[index].salaryRange,
-          subTitle: suggestions[index].subTitle),
+          contractTime: suggestions[index].contractTime,
+          contractType: suggestions[index].contractType,
+          salaryRange:
+              "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
+          company: suggestions[index].company),
     );
   }
 
@@ -94,11 +97,12 @@ class Search extends SearchDelegate {
       itemCount: suggestions.length,
       itemBuilder: (context, index) => JobCard(
           title: suggestions[index].title,
-          country: suggestions[index].country,
-          jobType: suggestions[index].jobType,
           location: suggestions[index].location,
-          salaryRange: suggestions[index].salaryRange,
-          subTitle: suggestions[index].subTitle),
+          contractTime: suggestions[index].contractTime,
+          contractType: suggestions[index].contractType,
+          salaryRange:
+              "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
+          company: suggestions[index].company),
     );
   }
 }

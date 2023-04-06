@@ -1,7 +1,4 @@
-// ignore_for_file: dead_code
-
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -67,7 +64,7 @@ class _SignInState extends State<SignIn> {
                       ),
                       onPressed: () {
                         setState(() {
-                          visible != visible;
+                          visible = !visible;
                         });
                       },
                     ),

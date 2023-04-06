@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class JobCard extends StatelessWidget {
-  final String? title, subTitle, salaryRange, country, jobType, location;
+  final String? title,
+      company,
+      salaryRange,
+      contractType,
+      contractTime,
+      location;
   const JobCard({
     super.key,
-    this.country,
+    this.contractType,
     this.salaryRange,
-    this.subTitle,
+    this.company,
     this.title,
-    this.jobType,
+    this.contractTime,
     this.location,
   });
 
@@ -60,7 +65,7 @@ class JobCard extends StatelessWidget {
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              subtitle: Text(subTitle.toString()),
+              subtitle: Text(company.toString()),
               trailing: const Icon(
                 CupertinoIcons.bookmark,
                 size: 20,
@@ -74,7 +79,7 @@ class JobCard extends StatelessWidget {
                 height: 8,
               ),
               Text(
-                country.toString(),
+                location.toString(),
                 style: const TextStyle(
                   fontSize: 17,
                 ),
@@ -96,8 +101,8 @@ class JobCard extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 children: [
-                  _buildChip(jobType),
-                  _buildChip(location),
+                  _buildChip(contractTime),
+                  _buildChip(contractType),
                 ],
               )
             ])
