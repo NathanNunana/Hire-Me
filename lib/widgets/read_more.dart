@@ -42,8 +42,11 @@ class ReadMore extends StatelessWidget {
               height: 15,
             ),
             InkWell(
-              onTap: () {
-                Provider.of<JobProvider>(context).fetchJobs();
+              onTap: () async {
+                var jobProvider =
+                    Provider.of<JobProvider>(context, listen: false);
+                await jobProvider.fetchJobs();
+                print('jobs: ${jobProvider.getJobs}');
               },
               child: Container(
                 padding:

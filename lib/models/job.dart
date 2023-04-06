@@ -5,7 +5,7 @@ class Job {
   final String? title;
   final String? company;
   final String? description;
-  final List<String>? area;
+  final List<dynamic>? area;
   final String? location;
   final num? minSalary;
   final num? maxSalary;
