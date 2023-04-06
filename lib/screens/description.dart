@@ -145,30 +145,33 @@ class JobDescription extends StatelessWidget {
         ),
         DefaultTabController(
           length: 2,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const TabBar(
-                labelColor: Colors.black,
-                tabs: [
-                  Tab(text: "Job Description"),
-                  Tab(text: "Minimum Qualification"),
-                ],
-              ),
-              SizedBox(
-                height: 250,
-                child: TabBarView(
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      Center(
-                        child: Text(description.toString()),
-                      ),
-                      const Center(
-                        child: Text("Minimum Requirement"),
-                      ),
-                    ]),
-              ),
-            ],
+          child: Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const TabBar(
+                  labelColor: Colors.black,
+                  tabs: [
+                    Tab(text: "Job Description"),
+                    Tab(text: "Minimum Qualification"),
+                  ],
+                ),
+                Expanded(
+                  child: SizedBox(
+                    child: TabBarView(
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          Center(
+                            child: Text(description.toString()),
+                          ),
+                          const Center(
+                            child: Text("Minimum Requirement"),
+                          ),
+                        ]),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Container(

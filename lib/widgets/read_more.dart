@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hire_me/providers/_index.dart';
+import 'package:provider/provider.dart';
 
 class ReadMore extends StatelessWidget {
   const ReadMore({super.key});
@@ -39,15 +41,21 @@ class ReadMore extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
-              child: const Text(
-                "Read more",
-                style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
+            InkWell(
+              onTap: () {
+                Provider.of<JobProvider>(context).fetchJobs();
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
+                child: const Text(
+                  "Read more",
+                  style: TextStyle(
+                      color: Colors.blue, fontWeight: FontWeight.w600),
+                ),
               ),
             )
           ],
