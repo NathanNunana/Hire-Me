@@ -1,11 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hire_me/models/_index.dart';
+import 'package:hire_me/providers/_index.dart';
 import 'package:hire_me/widgets/read_more.dart';
 import 'package:hire_me/widgets/job_card.dart';
 import 'package:hire_me/widgets/search_bar.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Future? jobs;
+  Future<Job> getJobs() async {
+    return await Provider.of<JobProvider>(context).fetchJobs();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    jobs = getJobs();
+  }
 
   Widget _buildHeader(context) {
     return ListTile(
@@ -116,35 +135,53 @@ class HomeScreen extends StatelessWidget {
             ),
             Expanded(
               child: SizedBox(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.pushNamed(context, '/details',
-                          arguments: <String, String>{
-                            'description': 'Job Description',
-                          }),
-                      child: const JobCard(
-                        title: "UI/UX Designer",
-                        company: "Google LLC",
-                        location: "Carlifornia, United State",
-                        salaryRange: "\$10,000 - \$25,000 /month",
-                        contractTime: "Full Time",
-                        contractType: "Remote",
-                      ),
-                    ),
-                    const JobCard(
-                      title: "UI/UX Designer",
-                      company: "Google LLC",
-                      location: "Carlifornia, United State",
-                      salaryRange: "\$10,000 - \$25,000 /month",
-                      contractTime: "Full Time",
-                      contractType: "Remote",
-                    ),
-                  ],
-                ),
-              ),
+                  child: FutureBuilder(
+                future: jobs,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    } else if (snapshot.hasData) {
+                      return Text(snapshot.data);
+                    } else {
+                      return const Text('Empty data');
+                    }
+                  } else {
+                    return Text('State: ${snapshot.connectionState}');
+                  }
+                },
+              )
+                  // ListView(
+                  //   shrinkWrap: true,
+                  //   physics: const BouncingScrollPhysics(),
+                  //   children: [
+                  //     InkWell(
+                  //       onTap: () => Navigator.pushNamed(context, '/details',
+                  //           arguments: <String, String>{
+                  //             'description': 'Job Description',
+                  //           }),
+                  //       child: const JobCard(
+                  //         title: "UI/UX Designer",
+                  //         company: "Google LLC",
+                  //         location: "Carlifornia, United State",
+                  //         salaryRange: "\$10,000 - \$25,000 /month",
+                  //         contractTime: "Full Time",
+                  //         contractType: "Remote",
+                  //       ),
+                  //     ),
+                  //     const JobCard(
+                  //       title: "UI/UX Designer",
+                  //       company: "Google LLC",
+                  //       location: "Carlifornia, United State",
+                  //       salaryRange: "\$10,000 - \$25,000 /month",
+                  //       contractTime: "Full Time",
+                  //       contractType: "Remote",
+                  //     ),
+                  //   ],
+                  // ),
+                  ),
             ),
             // Center(child: Text("Hire Me")),
           ],
