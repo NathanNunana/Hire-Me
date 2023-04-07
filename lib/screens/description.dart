@@ -165,11 +165,11 @@ class JobDescription extends StatelessWidget {
                         children: [
                           SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(20.0),
                             child: Text(
                               description.toString(),
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                             ),
                           ),

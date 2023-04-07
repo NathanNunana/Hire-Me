@@ -6,6 +6,7 @@ class AppRouter {
   static const String homeRoute = "/home";
   static const String detailsRoute = "/details";
   static const String editProfile = "/editProfile";
+  static const String viewAllRoute = "/viewAll";
 
   // handling generation of route
   static Route<dynamic> generate(RouteSettings settings) {
@@ -29,6 +30,11 @@ class AppRouter {
         return _route(
           const EditProfile(),
           editProfile,
+        );
+      case viewAllRoute:
+        return _route(
+          const ViewAll(),
+          viewAllRoute,
         );
       default:
         return _route(

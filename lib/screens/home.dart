@@ -118,14 +118,14 @@ class _HomeScreenState extends State<HomeScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     "Recent Jobs",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   InkWell(
-                    onTap: null,
-                    child: Text(
+                    onTap: () => Navigator.pushNamed(context, "/viewAll"),
+                    child: const Text(
                       "See All",
                       style: TextStyle(
                           fontWeight: FontWeight.w600, color: Colors.blue),
@@ -146,7 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(child: Text("Error: ${snapshot.error}"));
                     } else if (snapshot.hasData) {
                       return ListView.builder(
-                        itemCount: snapshot.data.length,
+                        itemCount: snapshot.data.length >= 10
+                            ? 10
+                            : snapshot.data.length,
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) => InkWell(

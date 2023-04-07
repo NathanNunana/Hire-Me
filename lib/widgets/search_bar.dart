@@ -48,9 +48,10 @@ class Search extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     List suggestions = context.read<JobProvider>().jobs.where((element) {
-      final result = element.title.toString().toLowerCase();
+      final title = element.title.toString().toLowerCase();
+      final company = element.company.toString().toLowerCase();
       final input = query.toLowerCase();
-      return result.contains(input);
+      return title.contains(input) || company.contains(input);
     }).toList();
 
     return ListView.builder(
@@ -69,9 +70,10 @@ class Search extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     List suggestions = context.read<JobProvider>().jobs.where((element) {
-      final result = element.title.toString().toLowerCase();
+      final title = element.title.toString().toLowerCase();
+      final company = element.company.toString().toLowerCase();
       final input = query.toLowerCase();
-      return result.contains(input);
+      return title.contains(input) || company.contains(input);
     }).toList();
 
     return ListView.builder(
