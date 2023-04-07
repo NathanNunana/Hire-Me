@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hire_me/models/_index.dart';
 
 class JobDescription extends StatelessWidget {
   final String? title,
       description,
-      subTitle,
+      company,
       salaryRange,
-      country,
-      jobType,
-      location;
+      location,
+      contractType,
+      contractTime;
   const JobDescription({
     super.key,
-    this.country,
+    this.contractType,
     this.description,
-    this.jobType,
+    this.contractTime,
     this.location,
     this.salaryRange,
-    this.subTitle,
+    this.company,
     this.title,
   });
 
@@ -77,16 +78,17 @@ class JobDescription extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                "UI/UX Designer",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              Text(
+                title.toString(),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                "Facebook LLC",
-                style: TextStyle(
+              Text(
+                company.toString(),
+                style: const TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.w500,
                 ),
@@ -101,9 +103,9 @@ class JobDescription extends StatelessWidget {
                 const SizedBox(
                   height: 8,
                 ),
-                const Text(
-                  "California, United States",
-                  style: TextStyle(
+                Text(
+                  location.toString(),
+                  style: const TextStyle(
                     fontSize: 17,
                     color: Colors.black54,
                   ),
@@ -111,9 +113,9 @@ class JobDescription extends StatelessWidget {
                 const SizedBox(
                   height: 10.0,
                 ),
-                const Text(
-                  "\$10,000 - \$25,000 /month",
-                  style: TextStyle(
+                Text(
+                  salaryRange.toString(),
+                  style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -125,8 +127,8 @@ class JobDescription extends StatelessWidget {
                 Wrap(
                   spacing: 8,
                   children: [
-                    _buildChip("Full Time"),
-                    _buildChip("Onsite"),
+                    _buildChip(contractTime),
+                    _buildChip(contractType),
                   ],
                 ),
                 const SizedBox(
@@ -161,8 +163,15 @@ class JobDescription extends StatelessWidget {
                     child: TabBarView(
                         physics: const BouncingScrollPhysics(),
                         children: [
-                          Center(
-                            child: Text(description.toString()),
+                          SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              description.toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                           const Center(
                             child: Text("Minimum Requirement"),

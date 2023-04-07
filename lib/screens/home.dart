@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_me/models/_index.dart';
 import 'package:hire_me/providers/_index.dart';
-import 'package:hire_me/widgets/read_more.dart';
+import 'package:hire_me/screens/description.dart';
 import 'package:hire_me/widgets/job_card.dart';
+import 'package:hire_me/widgets/read_more.dart';
 import 'package:hire_me/widgets/search_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future? jobs;
-  Future<Job> getJobs() async {
-    return await Provider.of<JobProvider>(context).fetchJobs();
+  Future<dynamic>? jobs;
+  Future getJobs() async {
+    return await context.read<JobProvider>().fetchJobs();
   }
 
   @override
@@ -139,49 +140,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: jobs,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
                       return Center(child: Text("Error: ${snapshot.error}"));
                     } else if (snapshot.hasData) {
-                      return Text(snapshot.data);
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => JobDescription(
+                                  title: snapshot.data[index].title.toString(),
+                                  company:
+                                      snapshot.data[index].company.toString(),
+                                  location:
+                                      snapshot.data[index].location.toString(),
+                                  salaryRange:
+                                      "\$ ${snapshot.data[index].minSalary} - ${snapshot.data[index].maxSalary} /month",
+                                  contractTime: snapshot
+                                      .data[index].contractTime
+                                      .toString(),
+                                  contractType:
+                                      snapshot.data[index].contractType ??
+                                          "hybrid",
+                                  description: snapshot.data[index].description
+                                      .toString(),
+                                ),
+                              )),
+                          child: JobCard(
+                            title: snapshot.data[index].title.toString(),
+                            company: snapshot.data[index].company.toString(),
+                            location: snapshot.data[index].location.toString(),
+                            salaryRange:
+                                "\$ ${snapshot.data[index].minSalary} - ${snapshot.data[index].maxSalary} /month",
+                            contractTime:
+                                snapshot.data[index].contractTime.toString(),
+                            contractType:
+                                snapshot.data[index].contractType ?? "hybrid",
+                          ),
+                        ),
+                      );
                     } else {
-                      return const Text('Empty data');
+                      return const Text('No Jobs Posted');
                     }
                   } else {
                     return Text('State: ${snapshot.connectionState}');
                   }
                 },
-              )
-                  // ListView(
-                  //   shrinkWrap: true,
-                  //   physics: const BouncingScrollPhysics(),
-                  //   children: [
-                  //     InkWell(
-                  //       onTap: () => Navigator.pushNamed(context, '/details',
-                  //           arguments: <String, String>{
-                  //             'description': 'Job Description',
-                  //           }),
-                  //       child: const JobCard(
-                  //         title: "UI/UX Designer",
-                  //         company: "Google LLC",
-                  //         location: "Carlifornia, United State",
-                  //         salaryRange: "\$10,000 - \$25,000 /month",
-                  //         contractTime: "Full Time",
-                  //         contractType: "Remote",
-                  //       ),
-                  //     ),
-                  //     const JobCard(
-                  //       title: "UI/UX Designer",
-                  //       company: "Google LLC",
-                  //       location: "Carlifornia, United State",
-                  //       salaryRange: "\$10,000 - \$25,000 /month",
-                  //       contractTime: "Full Time",
-                  //       contractType: "Remote",
-                  //     ),
-                  //   ],
-                  // ),
-                  ),
+              )),
             ),
             // Center(child: Text("Hire Me")),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hire_me/providers/_index.dart';
 import 'package:hire_me/services/_index.dart';
 import 'package:hire_me/utils/_index.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,12 @@ void main() async {
 
   return runApp(
     MultiProvider(
-      providers: Singleton.registerProvider(),
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => JobProvider(),
+        ),
+      ],
+      // providers: Singleton.registerProvider(),
       child: const HireMe(),
     ),
   );

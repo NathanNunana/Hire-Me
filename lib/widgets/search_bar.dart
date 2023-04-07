@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hire_me/models/_index.dart';
+import 'package:hire_me/providers/_index.dart';
 import 'package:hire_me/widgets/job_card.dart';
+import 'package:provider/provider.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({super.key});
@@ -27,26 +28,6 @@ class SearchBar extends StatelessWidget {
 }
 
 class Search extends SearchDelegate {
-  List<Job> data = [
-    Job(
-      title: "UI/UX Designer",
-      company: "Google LLC",
-      location: "Carlifornia, United State",
-      minSalary: 10000,
-      maxSalary: 25000,
-      contractTime: "Full Time",
-      contractType: "Remote",
-    ),
-    Job(
-      title: "Web Developer",
-      company: "Facebook LLC",
-      location: "Carlifornia, United State",
-      minSalary: 12000,
-      maxSalary: 30000,
-      contractTime: "Full Time",
-      contractType: "Remote",
-    )
-  ];
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -66,7 +47,7 @@ class Search extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<Job> suggestions = data.where((element) {
+    List suggestions = context.read<JobProvider>().jobs.where((element) {
       final result = element.title.toString().toLowerCase();
       final input = query.toLowerCase();
       return result.contains(input);
@@ -75,19 +56,19 @@ class Search extends SearchDelegate {
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, index) => JobCard(
-          title: suggestions[index].title,
-          location: suggestions[index].location,
-          contractTime: suggestions[index].contractTime,
-          contractType: suggestions[index].contractType,
+          title: suggestions[index].title.toString(),
+          location: suggestions[index].location.toString(),
+          contractTime: suggestions[index].contractTime.toString(),
+          contractType: suggestions[index].contractType.toString(),
           salaryRange:
               "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-          company: suggestions[index].company),
+          company: suggestions[index].company.toString()),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<Job> suggestions = data.where((element) {
+    List suggestions = context.read<JobProvider>().jobs.where((element) {
       final result = element.title.toString().toLowerCase();
       final input = query.toLowerCase();
       return result.contains(input);
@@ -96,13 +77,13 @@ class Search extends SearchDelegate {
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, index) => JobCard(
-          title: suggestions[index].title,
-          location: suggestions[index].location,
-          contractTime: suggestions[index].contractTime,
-          contractType: suggestions[index].contractType,
+          title: suggestions[index].title.toString(),
+          location: suggestions[index].location.toString(),
+          contractTime: suggestions[index].contractTime.toString(),
+          contractType: suggestions[index].contractType.toString(),
           salaryRange:
               "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-          company: suggestions[index].company),
+          company: suggestions[index].company.toString()),
     );
   }
 }
