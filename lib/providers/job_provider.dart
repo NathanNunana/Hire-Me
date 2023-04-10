@@ -4,7 +4,7 @@ class JobProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
   List jobs = [];
   Future fetchJobs() async {
-    final data = await supabase.from('jobs').select('*');
+    final data = await supabase.from('jobs').select('*').limit(100);
     jobs = data.map((element) => Job.fromJson(element)).toList();
     return jobs;
   }

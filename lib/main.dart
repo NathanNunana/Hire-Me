@@ -27,9 +27,8 @@ void main() async {
   return runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => JobProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => JobProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       // providers: Singleton.registerProvider(),
       child: const HireMe(),
