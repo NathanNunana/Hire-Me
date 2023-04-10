@@ -9,7 +9,7 @@ class ReadMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(20),
-      height: 150,
+      height: MediaQuery.of(context).size.height * 0.16,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.blue,
@@ -26,7 +26,7 @@ class ReadMore extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width / 1.8,
               child: const Text(
                 "See how you can find a job easily!",
                 style: TextStyle(
@@ -39,13 +39,13 @@ class ReadMore extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 12,
             ),
             InkWell(
               onTap: () {},
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15)),
