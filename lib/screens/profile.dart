@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hire_me/providers/_index.dart';
+import 'package:hire_me/utils/_index.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -26,6 +30,17 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
+    if (auth.user == null) {
+      return Center(
+        child: ElevatedButton(
+          child: const Text("Sign In"),
+          onPressed: () {
+            Navigator.of(context).pushNamed(AppRouter.signIn);
+          },
+        ),
+      );
+    }
     return Column(
       children: [
         const ListTile(
@@ -51,16 +66,16 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      "Nathan Nunana",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                      auth.user!.userMetadata!["fullname"] ?? "Hello",
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8.0,
                     ),
-                    Text(
+                    const Text(
                       "UI/UX Designer at Paypal Inc.",
                       style: TextStyle(fontSize: 14, color: Colors.black54),
                     ),
@@ -122,6 +137,19 @@ class ProfileScreen extends StatelessWidget {
               color: Colors.blue,
             ),
             "Certificates and Licenses"),
+        Center(
+          child: TextButton(
+            onPressed: () async {
+              await auth.signOut();
+            },
+            child: const Text(
+              "Logout",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+          ),
+        )
       ],
     );
   }
