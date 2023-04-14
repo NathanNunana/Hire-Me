@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hire_me/models/_index.dart';
 import 'package:hire_me/providers/_index.dart';
+import 'package:hire_me/screens/application.dart';
+import 'package:hire_me/utils/_index.dart';
 import 'package:provider/provider.dart';
 
 class JobDescription extends StatelessWidget {
@@ -40,6 +42,7 @@ class JobDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.read<AuthProvider>();
     final snackbar = ScaffoldMessenger.of(context);
+    final nav = Navigator.of(context);
     // final job = context
     //     .read<JobProvider>()
     //     .jobs
@@ -227,7 +230,19 @@ class JobDescription extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25))),
-            onPressed: () {},
+            onPressed: () async {
+              final res = await context
+                  .read<JobProvider>()
+                  .fetchApplicationDetails(auth.user!.id);
+              print(res);
+              print(auth.user!.id);
+              if (res) {
+                nav.push(CupertinoPageRoute(
+                    builder: (_) => SubmitApplication(
+                          jobId: jobId,
+                        )));
+              }
+            },
             child: const Text("Apply"),
           ),
         )

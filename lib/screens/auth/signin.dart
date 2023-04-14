@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hire_me/providers/_index.dart';
 import 'package:hire_me/utils/_index.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
@@ -22,11 +23,18 @@ class _SignInState extends State<SignIn> {
       final snackbar = ScaffoldMessenger.of(context);
       final res =
           await auth.signIn(_emailController.text, _passwordController.text);
+      await Hive.openBox('hireme');
+      final box = Hive.box('hireme');
+      bool seen = box.get('seen') ?? false;
 
       if (res) {
-        snackbar.showSnackBar(
-            const SnackBar(content: Text("Signed in Successfully!")));
-        nav.pushReplacementNamed(AppRouter.onboardingRoute);
+        print(seen);
+        if (!seen) {
+          nav.pushReplacementNamed(AppRouter.onboardingRoute);
+        } else {
+          await box.put('seen', true);
+          nav.pushReplacementNamed(AppRouter.homeRoute);
+        }
       } else {
         snackbar.showSnackBar(const SnackBar(content: Text("Sign in Failed!")));
       }

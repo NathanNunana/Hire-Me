@@ -7,6 +7,7 @@ class AppRouter {
   static const String onboardingRoute = "/onboarding";
   static const String detailsRoute = "/details";
   static const String editProfile = "/editProfile";
+  static const String submitRoute = "/submitRoute";
   static const String viewAllRoute = "/viewAll";
   static const String registerRoute = "/register";
   static const String signIn = "/signIn";
@@ -30,6 +31,8 @@ class AppRouter {
         return _route(const ViewAll());
       case registerRoute:
         return _route(const Register());
+      case submitRoute:
+        return _route(const SubmitApplication());
       default:
         return _route(const Loader());
     }

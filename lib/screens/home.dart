@@ -27,12 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
     jobs = getJobs();
   }
 
-  Widget _buildHeader(context) {
+  Widget _buildHeader(context, name) {
     return ListTile(
       leading: const CircleAvatar(
         radius: 20,
         backgroundColor: Colors.white,
-        backgroundImage: AssetImage('assets/images/nathan_n.png'),
+        backgroundImage: AssetImage('assets/images/profile.png'),
       ),
       title: const Text(
         "Good Morning 👋",
@@ -41,17 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
           fontWeight: FontWeight.w400,
         ),
       ),
-      subtitle: const Text(
-        "Nathan Nunana",
-        style: TextStyle(
+      subtitle: Text(
+        name,
+        style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w600,
           fontSize: 17,
         ),
       ),
       trailing: Container(
-        height: 50,
-        width: 50,
+        height: 40,
+        width: 40,
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -73,12 +73,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List user = context
+        .read<AuthProvider>()
+        .user!
+        .userMetadata!['fullname']
+        .toString()
+        .split(" ");
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(context),
+            _buildHeader(context, user.sublist(1, user.length).join(" ")),
             const SearchBar(),
             // Container(
             //   margin:

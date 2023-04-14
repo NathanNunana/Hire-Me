@@ -3,6 +3,7 @@ library hireme_utils;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_me/providers/_index.dart';
+import 'package:hire_me/screens/application.dart';
 import 'package:hire_me/screens/auth/register.dart';
 import 'package:hire_me/screens/auth/signin.dart';
 import 'package:hire_me/screens/auth/register.dart';
