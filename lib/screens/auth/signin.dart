@@ -19,10 +19,16 @@ class _SignInState extends State<SignIn> {
     if (fKey.currentState!.validate()) {
       final nav = Navigator.of(context);
       final auth = context.read<AuthProvider>();
+      final snackbar = ScaffoldMessenger.of(context);
       final res =
           await auth.signIn(_emailController.text, _passwordController.text);
+
       if (res) {
-        nav.pushReplacementNamed(AppRouter.homeRoute);
+        snackbar.showSnackBar(
+            const SnackBar(content: Text("Signed in Successfully!")));
+        nav.pushReplacementNamed(AppRouter.onboardingRoute);
+      } else {
+        snackbar.showSnackBar(const SnackBar(content: Text("Sign in Failed!")));
       }
     }
   }

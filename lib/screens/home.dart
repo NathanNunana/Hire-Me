@@ -152,27 +152,33 @@ class _HomeScreenState extends State<HomeScreen> {
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) => InkWell(
-                          onTap: () => Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => JobDescription(
-                                  title: snapshot.data[index].title.toString(),
-                                  company:
-                                      snapshot.data[index].company.toString(),
-                                  location:
-                                      snapshot.data[index].location.toString(),
-                                  salaryRange:
-                                      "\$ ${snapshot.data[index].minSalary} - ${snapshot.data[index].maxSalary} /month",
-                                  contractTime: snapshot
-                                      .data[index].contractTime
-                                      .toString(),
-                                  contractType:
-                                      snapshot.data[index].contractType ??
-                                          "hybrid",
-                                  description: snapshot.data[index].description
-                                      .toString(),
-                                ),
-                              )),
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => JobDescription(
+                                    title:
+                                        snapshot.data[index].title.toString(),
+                                    company:
+                                        snapshot.data[index].company.toString(),
+                                    location: snapshot.data[index].location
+                                        .toString(),
+                                    salaryRange:
+                                        "\$ ${snapshot.data[index].minSalary} - ${snapshot.data[index].maxSalary} /month",
+                                    contractTime: snapshot
+                                        .data[index].contractTime
+                                        .toString(),
+                                    contractType:
+                                        snapshot.data[index].contractType ??
+                                            "hybrid",
+                                    description: snapshot
+                                        .data[index].description
+                                        .toString(),
+                                    jobId:
+                                        snapshot.data[index].jobId.toString(),
+                                  ),
+                                )),
+                          },
                           child: JobCard(
                             title: snapshot.data[index].title.toString(),
                             company: snapshot.data[index].company.toString(),

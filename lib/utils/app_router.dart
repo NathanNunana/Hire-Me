@@ -4,6 +4,7 @@ class AppRouter {
   // routes
   static const String initRoute = "/";
   static const String homeRoute = "/home";
+  static const String onboardingRoute = "/onboarding";
   static const String detailsRoute = "/details";
   static const String editProfile = "/editProfile";
   static const String viewAllRoute = "/viewAll";
@@ -19,10 +20,12 @@ class AppRouter {
         return _route(const SignIn());
       case homeRoute:
         return _route(const LandingScreen());
+      case onboardingRoute:
+        return _route(const OnboardingScreen());
       case detailsRoute:
         return _route(const JobDescription());
       case editProfile:
-        return _route(const EditProfile());
+        return _route(EditProfile());
       case viewAllRoute:
         return _route(const ViewAll());
       case registerRoute:

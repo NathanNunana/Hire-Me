@@ -22,8 +22,11 @@ class _RegisterState extends State<Register> {
   };
   final _fKey = GlobalKey<FormState>();
   StreamSubscription? authSub;
+
   signUp() async {
     final navigator = Navigator.of(context);
+    final snackbar = ScaffoldMessenger.of(context);
+
     try {
       if (_fKey.currentState!.validate()) {
         final auth = context.read<AuthProvider>();
@@ -32,8 +35,13 @@ class _RegisterState extends State<Register> {
             fullname: data["fullname"]!,
             email: data["email"]!,
             password: data["password"]!);
-
-        // TODO: Alert the User to verify the email
+        if (res) {
+          snackbar.showSnackBar(
+              const SnackBar(content: Text("Check email and verify account!")));
+        } else {
+          snackbar.showSnackBar(
+              const SnackBar(content: Text("Failed to sign up!")));
+        }
       }
     } catch (e) {
       print(e);

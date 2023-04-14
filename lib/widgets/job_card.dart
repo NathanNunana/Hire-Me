@@ -31,6 +31,7 @@ class JobCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final abb = company.toString().split(" ").first;
     return Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 15.0,
@@ -55,10 +56,7 @@ class JobCard extends StatelessWidget {
                       color: Colors.black12,
                     ),
                     borderRadius: BorderRadius.circular(18)),
-                child: const Icon(
-                  Icons.facebook,
-                  color: Colors.blue,
-                ),
+                child: Text(abb),
               ),
               title: Text(
                 title.toString(),

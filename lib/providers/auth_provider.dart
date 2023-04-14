@@ -68,4 +68,36 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> updateProfile({fullname, position, email}) async {
+    try {
+      await sb.auth.updateUser(
+        UserAttributes(
+          data: {
+            "fullname": fullname,
+            "position": position,
+          },
+          email: email,
+        ),
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> saveJob({jobId}) async {
+    try {
+      await sb.auth.updateUser(
+        UserAttributes(
+          data: {
+            "jobId": [...user!.userMetadata!["jobId"], jobId],
+          },
+        ),
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

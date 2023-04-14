@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hire_me/providers/_index.dart';
 import 'package:hire_me/widgets/search_bar.dart';
 import 'package:hire_me/widgets/job_card.dart';
+import 'package:provider/provider.dart';
 
 class SavedJobs extends StatelessWidget {
   const SavedJobs({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final job = context.read<JobProvider>().jobs;
+    final auth = context.read<AuthProvider>();
+    List filteredJobs = job
+        .where(((element) => auth.user!.userMetadata!["jobId"]
+            .contains(element.jobId.toString())))
+        .toList();
+    print("$filteredJobs ${auth.user!.userMetadata!['jobId']}");
     return Column(
       children: [
         const ListTile(
@@ -19,26 +28,18 @@ class SavedJobs extends StatelessWidget {
         const SearchBar(),
         Expanded(
             child: SizedBox(
-          child: ListView(
+          child: ListView.builder(
             physics: const BouncingScrollPhysics(),
-            children: const [
-              JobCard(
-                title: "UI/UX Designer",
-                company: "Google LLC",
-                location: "Carlifornia, United State",
-                salaryRange: "\$ 12,000 - \$ 15,000 /month",
-                contractTime: "Full Time",
-                contractType: "Remote",
-              ),
-              JobCard(
-                title: "UI/UX Designer",
-                company: "Google LLC",
-                location: "Carlifornia, United State",
-                salaryRange: "\$ 12,000 - \$ 15,000 /month",
-                contractTime: "Full Time",
-                contractType: "Remote",
-              ),
-            ],
+            itemCount: filteredJobs.length,
+            itemBuilder: (context, index) => JobCard(
+              company: filteredJobs[index].company.toString(),
+              contractTime: filteredJobs[index].contractTime.toString(),
+              contractType: filteredJobs[index].contractType.toString(),
+              location: filteredJobs[index].location.toString(),
+              salaryRange:
+                  "\$ ${filteredJobs[index].minSalary} - ${filteredJobs[index].maxSalary} /month",
+              title: filteredJobs[index].title.toString(),
+            ),
           ),
         )),
       ],

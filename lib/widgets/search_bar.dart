@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hire_me/providers/_index.dart';
+import 'package:hire_me/screens/description.dart';
 import 'package:hire_me/widgets/job_card.dart';
 import 'package:provider/provider.dart';
 
@@ -56,14 +58,30 @@ class Search extends SearchDelegate {
 
     return ListView.builder(
       itemCount: suggestions.length,
-      itemBuilder: (context, index) => JobCard(
-          title: suggestions[index].title.toString(),
-          location: suggestions[index].location.toString(),
-          contractTime: suggestions[index].contractTime.toString(),
-          contractType: suggestions[index].contractType.toString(),
-          salaryRange:
-              "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-          company: suggestions[index].company.toString()),
+      itemBuilder: (context, index) => InkWell(
+        onTap: () => Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => JobDescription(
+                title: suggestions[index].title.toString(),
+                company: suggestions[index].company.toString(),
+                location: suggestions[index].location.toString(),
+                salaryRange:
+                    "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
+                contractTime: suggestions[index].contractTime.toString(),
+                contractType: suggestions[index].contractType ?? "hybrid",
+                description: suggestions[index].description.toString(),
+              ),
+            )),
+        child: JobCard(
+            title: suggestions[index].title.toString(),
+            location: suggestions[index].location.toString(),
+            contractTime: suggestions[index].contractTime.toString(),
+            contractType: suggestions[index].contractType.toString(),
+            salaryRange:
+                "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
+            company: suggestions[index].company.toString()),
+      ),
     );
   }
 
@@ -78,14 +96,31 @@ class Search extends SearchDelegate {
 
     return ListView.builder(
       itemCount: suggestions.length,
-      itemBuilder: (context, index) => JobCard(
-          title: suggestions[index].title.toString(),
-          location: suggestions[index].location.toString(),
-          contractTime: suggestions[index].contractTime.toString(),
-          contractType: suggestions[index].contractType.toString(),
-          salaryRange:
-              "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-          company: suggestions[index].company.toString()),
+      itemBuilder: (context, index) => InkWell(
+        onTap: () => Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => JobDescription(
+                title: suggestions[index].title.toString(),
+                company: suggestions[index].company.toString(),
+                location: suggestions[index].location.toString(),
+                salaryRange:
+                    "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
+                contractTime: suggestions[index].contractTime.toString(),
+                contractType: suggestions[index].contractType ?? "hybrid",
+                description: suggestions[index].description.toString(),
+                jobId: suggestions[index].jobId,
+              ),
+            )),
+        child: JobCard(
+            title: suggestions[index].title.toString(),
+            location: suggestions[index].location.toString(),
+            contractTime: suggestions[index].contractTime.toString(),
+            contractType: suggestions[index].contractType.toString(),
+            salaryRange:
+                "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
+            company: suggestions[index].company.toString()),
+      ),
     );
   }
 }

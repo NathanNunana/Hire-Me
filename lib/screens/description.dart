@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hire_me/models/_index.dart';
+import 'package:hire_me/providers/_index.dart';
+import 'package:provider/provider.dart';
 
 class JobDescription extends StatelessWidget {
   final String? title,
@@ -9,7 +11,8 @@ class JobDescription extends StatelessWidget {
       salaryRange,
       location,
       contractType,
-      contractTime;
+      contractTime,
+      jobId;
   const JobDescription({
     super.key,
     this.contractType,
@@ -19,6 +22,7 @@ class JobDescription extends StatelessWidget {
     this.salaryRange,
     this.company,
     this.title,
+    this.jobId,
   });
 
   _buildChip(text) {
@@ -34,6 +38,12 @@ class JobDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.read<AuthProvider>();
+    final snackbar = ScaffoldMessenger.of(context);
+    // final job = context
+    //     .read<JobProvider>()
+    //     .jobs
+    //     .where((element) => element.jobId == jobId);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -44,9 +54,35 @@ class JobDescription extends StatelessWidget {
               color: Colors.black,
             ),
             onPressed: () => Navigator.pop(context)),
-        actions: const [
-          IconButton(onPressed: null, icon: Icon(CupertinoIcons.bookmark)),
-          IconButton(onPressed: null, icon: Icon(CupertinoIcons.paperplane))
+        actions: [
+          IconButton(
+              onPressed: () async {
+                // print("jobId $jobId");
+                final res = await auth.saveJob(jobId: jobId);
+                if (res) {
+                  snackbar.showSnackBar(const SnackBar(
+                      content: Text(
+                    "Job Saved!",
+                    style: TextStyle(color: Colors.green),
+                  )));
+                } else {
+                  snackbar.showSnackBar(const SnackBar(
+                      content: Text(
+                    "Failed!",
+                    style: TextStyle(color: Colors.red),
+                  )));
+                }
+              },
+              icon: const Icon(
+                CupertinoIcons.bookmark,
+                color: Colors.black,
+              )),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                CupertinoIcons.paperplane,
+                color: Colors.black,
+              ))
         ],
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [

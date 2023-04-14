@@ -31,126 +31,127 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final nav = Navigator.of(context);
     if (auth.user == null) {
       return Center(
         child: ElevatedButton(
           child: const Text("Sign In"),
           onPressed: () {
-            Navigator.of(context).pushNamed(AppRouter.signIn);
+            nav.pushNamed(AppRouter.signIn);
           },
         ),
       );
     }
-    return Column(
-      children: [
-        const ListTile(
-          // leading: Icon(CupertinoIcons.wifi),
-          title: Text(
-            "Profile",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 23),
-          ),
-          trailing: Icon(CupertinoIcons.settings),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage('assets/images/nathan_n.png'),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      auth.user!.userMetadata!["fullname"] ?? "Hello",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    const Text(
-                      "UI/UX Designer at Paypal Inc.",
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
-                    ),
-                  ],
-                ),
-              ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const ListTile(
+            // leading: Icon(CupertinoIcons.wifi),
+            title: Text(
+              "Profile",
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 23),
             ),
-            IconButton(
+            trailing: Icon(CupertinoIcons.settings),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.white,
+                    backgroundImage: AssetImage('assets/images/nathan_n.png'),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        auth.user!.userMetadata!["fullname"] ?? "Hello",
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      Text(
+                        auth.user!.userMetadata!["position"] ??
+                            "UI/UX Designer at Paypal Inc.",
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.black54),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              IconButton(
                 onPressed: () => Navigator.pushNamed(context, '/editProfile'),
                 icon: const Icon(
                   Icons.edit,
                   color: Colors.blue,
-                )),
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        const Divider(),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.person_fill,
-              color: Colors.blue,
-            ),
-            "Contact Information"),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.doc_fill,
-              color: Colors.blue,
-            ),
-            "Summary"),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.chart_pie_fill,
-              color: Colors.blue,
-            ),
-            "Expected Salary"),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.briefcase_fill,
-              color: Colors.blue,
-            ),
-            "Work Experience"),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.book_fill,
-              color: Colors.blue,
-            ),
-            "Education"),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.doc_chart_fill,
-              color: Colors.blue,
-            ),
-            "Projects"),
-        _buildProfileCard(
-            const Icon(
-              CupertinoIcons.doc_fill,
-              color: Colors.blue,
-            ),
-            "Certificates and Licenses"),
-        Center(
-          child: TextButton(
-            onPressed: () async {
-              await auth.signOut();
-            },
-            child: const Text(
-              "Logout",
-              style: TextStyle(
-                color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          const Divider(),
+          _buildProfileCard(
+              const Icon(
+                CupertinoIcons.person_fill,
+                color: Colors.blue,
+              ),
+              "Contact Information"),
+          _buildProfileCard(
+              const Icon(
+                CupertinoIcons.doc_fill,
+                color: Colors.blue,
+              ),
+              "Summary"),
+          _buildProfileCard(
+              const Icon(
+                CupertinoIcons.chart_pie_fill,
+                color: Colors.blue,
+              ),
+              "Expected Salary"),
+          _buildProfileCard(
+              const Icon(
+                CupertinoIcons.briefcase_fill,
+                color: Colors.blue,
+              ),
+              "Work Experience"),
+          _buildProfileCard(
+              const Icon(
+                CupertinoIcons.book_fill,
+                color: Colors.blue,
+              ),
+              "Education"),
+          _buildProfileCard(
+              const Icon(
+                CupertinoIcons.doc_chart_fill,
+                color: Colors.blue,
+              ),
+              "Projects"),
+          Center(
+            child: TextButton(
+              onPressed: () async {
+                await auth.signOut();
+                nav.pushReplacementNamed(AppRouter.signIn);
+              },
+              child: const Text(
+                "Logout",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
               ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

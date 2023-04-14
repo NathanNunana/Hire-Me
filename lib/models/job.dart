@@ -1,7 +1,7 @@
 part of hireme_models;
 
 class Job {
-  final String? jobId;
+  final int? jobId;
   final String? title;
   final String? company;
   final String? description;
@@ -14,6 +14,7 @@ class Job {
   final String? contractTime;
   final String? contractType;
   final String? created;
+  final bool? save;
 
   Job({
     this.title,
@@ -29,11 +30,12 @@ class Job {
     this.contractType,
     this.created,
     this.jobId,
+    this.save = false,
   });
 
   factory Job.fromJson(Map<String, dynamic> job) {
     return Job(
-      jobId: job['jobId'],
+      jobId: job['job_id'],
       title: job['title'],
       company: job['company'],
       minSalary: job['min_salary'],
