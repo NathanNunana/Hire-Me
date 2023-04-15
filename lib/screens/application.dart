@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:hire_me/providers/_index.dart';
 import 'package:provider/provider.dart';
 
-class SubmitApplication extends StatelessWidget {
+class SubmitApplication extends StatefulWidget {
   final String? jobId;
   const SubmitApplication({super.key, this.jobId});
 
+  @override
+  State<SubmitApplication> createState() => _SubmitApplicationState();
+}
+
+class _SubmitApplicationState extends State<SubmitApplication> {
   showSuccessDialog() {}
-  showAlertDialog(context, userId, applicationId, jobId) {
+
+  showAlertDialog(userId, applicationId, jobId) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: const Text("Cancel"),
@@ -17,9 +23,15 @@ class SubmitApplication extends StatelessWidget {
       },
     );
     Widget continueButton = TextButton(
-      onPressed: () {
-        context.read<JobProvider>().apply(userId, applicationId, jobId);
-        showSuccessDialog();
+      onPressed: () async {
+        print(userId);
+        print(applicationId);
+        print(jobId);
+        final res = await context
+            .read<JobProvider>()
+            .apply(userId, applicationId, jobId);
+        print(res);
+        // showSuccessDialog();
       },
       child: const Text("Yes"),
     ); // set up the AlertDialog
@@ -43,7 +55,8 @@ class SubmitApplication extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = context.read<JobProvider>().data;
     final user = context.read<AuthProvider>().user;
-    List skills = data![0]['skills'];
+    final len = data!.length - 1;
+    List skills = data[len]['skills'];
     print(data);
     return Scaffold(
       appBar: AppBar(
@@ -95,11 +108,11 @@ class SubmitApplication extends StatelessWidget {
                       ),
                       ListTile(
                         leading: const Icon(Icons.email),
-                        title: Text(data![0]['email']),
+                        title: Text(data[len]['email']),
                       ),
                       ListTile(
                         leading: const Icon(Icons.phone),
-                        title: Text(data[0]['phone']),
+                        title: Text(data[len]['phone']),
                       ),
                     ],
                   ),
@@ -138,7 +151,7 @@ class SubmitApplication extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 5),
                         child: Text(
-                          data[0]['education'],
+                          data[len]['education'],
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
@@ -228,7 +241,7 @@ class SubmitApplication extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 5),
                         child: Text(
-                          "${data[0]['experience']} years",
+                          "${data[len]['experience']} years",
                           style: const TextStyle(fontSize: 18),
                         ),
                       ),
@@ -272,7 +285,7 @@ class SubmitApplication extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 5),
                         child: Text(
-                          data[0]['salary_range'],
+                          data[len]['salary_range'],
                           style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -294,7 +307,10 @@ class SubmitApplication extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () {
-                      showAlertDialog(context, user!.id, data[0]['id'], jobId);
+                      showAlertDialog(
+                          user!.id,
+                          int.parse(data[len]['id'].toString()),
+                          int.parse(widget.jobId.toString()));
                     },
                     child: const Text("Submit"),
                   ),

@@ -12,6 +12,7 @@ import 'package:hire_me/screens/view_all.dart';
 import 'package:hire_me/screens/description.dart';
 import 'package:hire_me/screens/edit_profile.dart';
 import 'package:hire_me/screens/auth/signin.dart';
+import 'package:hire_me/screens/applied_jobs.dart';
 import 'package:hire_me/screens/onboarding.dart';
 import 'package:hire_me/screens/landing.dart';
 import 'package:hire_me/services/_index.dart';

@@ -21,10 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return await context.read<JobProvider>().fetchJobs();
   }
 
+  Future getAppliedJobs() async {
+    final auth = context.read<AuthProvider>();
+    return await context.read<JobProvider>().fetchAppliedJobs(auth.user!.id);
+  }
+
   @override
   void initState() {
     super.initState();
     jobs = getJobs();
+    getAppliedJobs();
   }
 
   Widget _buildHeader(context, name) {

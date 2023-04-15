@@ -4,6 +4,7 @@ class JobProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
   List jobs = [];
   List? data;
+  List? appliedJobs;
 
   Future fetchJobs() async {
     final data = await supabase.from('jobs').select('*').limit(100);
@@ -60,11 +61,22 @@ class JobProvider extends ChangeNotifier {
 
   Future<bool> apply(userId, applicationId, jobId) async {
     try {
-      await supabase.from('application_info').insert({
+      await supabase.from('applied_jobs').insert({
         'application_id': applicationId,
         'user_id': userId,
-        'job_id': jobId,
+        'job_id': jobId
       });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> fetchAppliedJobs(userId) async {
+    try {
+      appliedJobs =
+          await supabase.from('applied_jobs').select('*').eq('user_id', userId);
+      print(appliedJobs);
       return true;
     } catch (e) {
       return false;

@@ -8,6 +8,7 @@ class AppRouter {
   static const String detailsRoute = "/details";
   static const String editProfile = "/editProfile";
   static const String submitRoute = "/submitRoute";
+  static const String appliedRoute = "/appliedRoute";
   static const String viewAllRoute = "/viewAll";
   static const String registerRoute = "/register";
   static const String signIn = "/signIn";
@@ -33,6 +34,8 @@ class AppRouter {
         return _route(const Register());
       case submitRoute:
         return _route(const SubmitApplication());
+      case appliedRoute:
+        return _route(const AppliedJobs());
       default:
         return _route(const Loader());
     }

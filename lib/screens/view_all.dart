@@ -38,6 +38,7 @@ class ViewAll extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) => InkWell(
                   onTap: () => Navigator.push(
