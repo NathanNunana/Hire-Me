@@ -7,27 +7,14 @@ import 'package:hire_me/utils/_index.dart';
 import 'package:provider/provider.dart';
 
 class JobDescription extends StatelessWidget {
-  final String? title,
-      description,
-      company,
-      salaryRange,
-      location,
-      contractType,
-      contractTime,
-      jobId;
-  const JobDescription({
+  final Job job;
+  const JobDescription(
+    this.job, {
     super.key,
-    this.contractType,
-    this.description,
-    this.contractTime,
-    this.location,
-    this.salaryRange,
-    this.company,
-    this.title,
-    this.jobId,
   });
 
-  _buildChip(text) {
+  _buildChip(String? text) {
+    if (text == null) return const SizedBox();
     return Container(
       padding: const EdgeInsets.all(5.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -43,10 +30,6 @@ class JobDescription extends StatelessWidget {
     final auth = context.read<AuthProvider>();
     final snackbar = ScaffoldMessenger.of(context);
     final nav = Navigator.of(context);
-    // final job = context
-    //     .read<JobProvider>()
-    //     .jobs
-    //     .where((element) => element.jobId == jobId);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -61,7 +44,7 @@ class JobDescription extends StatelessWidget {
           IconButton(
               onPressed: () async {
                 // print("jobId $jobId");
-                final res = await auth.saveJob(jobId: jobId);
+                final res = await auth.saveJob(job.id);
                 if (res) {
                   snackbar.showSnackBar(const SnackBar(
                       content: Text(
@@ -69,11 +52,14 @@ class JobDescription extends StatelessWidget {
                     style: TextStyle(color: Colors.green),
                   )));
                 } else {
-                  snackbar.showSnackBar(const SnackBar(
+                  snackbar.showSnackBar(
+                    const SnackBar(
                       content: Text(
-                    "Failed!",
-                    style: TextStyle(color: Colors.red),
-                  )));
+                        "Failed!",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  );
                 }
               },
               icon: const Icon(
@@ -118,7 +104,7 @@ class JobDescription extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                title.toString(),
+                job.title.toString(),
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               ),
@@ -126,7 +112,7 @@ class JobDescription extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                company.toString(),
+                job.company.toString(),
                 style: const TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.w500,
@@ -143,7 +129,7 @@ class JobDescription extends StatelessWidget {
                   height: 8,
                 ),
                 Text(
-                  location.toString(),
+                  job.location.toString(),
                   style: const TextStyle(
                     fontSize: 17,
                     color: Colors.black54,
@@ -153,7 +139,7 @@ class JobDescription extends StatelessWidget {
                   height: 10.0,
                 ),
                 Text(
-                  salaryRange.toString(),
+                  "\$ ${job.minSalary} - ${job.maxSalary} /month",
                   style: const TextStyle(
                     color: Colors.blue,
                     fontSize: 17,
@@ -166,8 +152,8 @@ class JobDescription extends StatelessWidget {
                 Wrap(
                   spacing: 8,
                   children: [
-                    _buildChip(contractTime),
-                    _buildChip(contractType),
+                    _buildChip(job.contractTime),
+                    _buildChip(job.contractType ?? "hybrid"),
                   ],
                 ),
                 const SizedBox(
@@ -206,7 +192,7 @@ class JobDescription extends StatelessWidget {
                             physics: const BouncingScrollPhysics(),
                             padding: const EdgeInsets.all(20.0),
                             child: Text(
-                              description.toString(),
+                              job.description.toString(),
                               style: const TextStyle(
                                 fontSize: 16,
                               ),
@@ -231,17 +217,13 @@ class JobDescription extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25))),
             onPressed: () async {
-              final res = await context
-                  .read<JobProvider>()
-                  .fetchApplicationDetails(auth.user!.id);
-              print(res);
-              print(auth.user!.id);
-              if (res) {
-                nav.push(CupertinoPageRoute(
-                    builder: (_) => SubmitApplication(
-                          jobId: jobId,
-                        )));
-              }
+              nav.push(
+                CupertinoPageRoute(
+                  builder: (_) => SubmitApplication(
+                    jobId: job.id,
+                  ),
+                ),
+              );
             },
             child: const Text("Apply"),
           ),

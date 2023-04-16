@@ -4,8 +4,12 @@ class AuthProvider extends ChangeNotifier {
   final sb = Supabase.instance.client;
   User? user;
   StreamSubscription? _authSub;
+  List<Job> savedJobs = [];
   AuthProvider() {
     _authSub = sb.auth.onAuthStateChange.listen(authChange);
+    Future.microtask(() {
+      getSavedJobs();
+    });
   }
 
   authChange(AuthState event) {
@@ -69,6 +73,20 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> hasAppInfo() async {
+    try {
+      if (user == null) throw Error();
+      final res = await sb
+          .from("application_info")
+          .select("id")
+          .eq("user_id", user!.id)
+          .limit(1);
+      return (res as List).isNotEmpty;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> updateProfile({fullname, position, email}) async {
     try {
       await sb.auth.updateUser(
@@ -80,24 +98,47 @@ class AuthProvider extends ChangeNotifier {
           email: email,
         ),
       );
+
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> saveJob({jobId}) async {
+  Future<bool> saveJob(int jobId) async {
+    if (user == null) return false;
     try {
-      await sb.auth.updateUser(
-        UserAttributes(
-          data: {
-            "jobId": [...user!.userMetadata!["jobId"], jobId],
-          },
-        ),
-      );
+      await sb.from("saved_jobs").insert({
+        "user_id": user!.id,
+        "job_id": jobId,
+      });
+      Future.microtask(() => getSavedJobs());
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  getApplicationInfo() async {
+    final res =
+        await sb.from("application_info").select("*").eq("user_id", user!.id);
+    return (res as List).first;
+  }
+
+  Future<List<Job>> getSavedJobs([bool shouldNotify = false]) async {
+    if (user == null) throw Error();
+    try {
+      final res = await sb
+          .from("saved_jobs")
+          .select("jobs:job_id(*)")
+          .eq("user_id", user!.id);
+      savedJobs = (res as List).map((e) => Job.fromJson(e["jobs"])).toList();
+      if (shouldNotify) {
+        notifyListeners();
+      }
+      return savedJobs;
+    } catch (e) {
+      rethrow;
     }
   }
 }

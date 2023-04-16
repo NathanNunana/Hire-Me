@@ -16,14 +16,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<dynamic>? jobs;
-  Future getJobs() async {
-    return await context.read<JobProvider>().fetchJobs();
+  Future<List<Job>>? jobs;
+  Future<List<Job>> getJobs() async {
+    return context.read<JobProvider>().fetchJobs();
   }
 
   Future getAppliedJobs() async {
-    final auth = context.read<AuthProvider>();
-    return await context.read<JobProvider>().fetchAppliedJobs(auth.user!.id);
+    return await context.read<JobProvider>().fetchAppliedJobs();
   }
 
   @override
@@ -148,70 +147,46 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: SizedBox(
-                  child: FutureBuilder(
-                future: jobs,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text("Error: ${snapshot.error}"));
-                    } else if (snapshot.hasData) {
-                      return ListView.builder(
-                        itemCount: snapshot.data.length >= 10
-                            ? 10
-                            : snapshot.data.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () => {
-                            Navigator.push(
+                child: FutureBuilder<List<Job>>(
+                  future: context.read<JobProvider>().fetchJobs(),
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text("Error: ${snapshot.error}"));
+                      } else if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length >= 10
+                              ? 10
+                              : snapshot.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: () => {
+                              Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                   builder: (context) => JobDescription(
-                                    title:
-                                        snapshot.data[index].title.toString(),
-                                    company:
-                                        snapshot.data[index].company.toString(),
-                                    location: snapshot.data[index].location
-                                        .toString(),
-                                    salaryRange:
-                                        "\$ ${snapshot.data[index].minSalary} - ${snapshot.data[index].maxSalary} /month",
-                                    contractTime: snapshot
-                                        .data[index].contractTime
-                                        .toString(),
-                                    contractType:
-                                        snapshot.data[index].contractType ??
-                                            "hybrid",
-                                    description: snapshot
-                                        .data[index].description
-                                        .toString(),
-                                    jobId:
-                                        snapshot.data[index].jobId.toString(),
-                                  ),
-                                )),
-                          },
-                          child: JobCard(
-                            title: snapshot.data[index].title.toString(),
-                            company: snapshot.data[index].company.toString(),
-                            location: snapshot.data[index].location.toString(),
-                            salaryRange:
-                                "\$ ${snapshot.data[index].minSalary} - ${snapshot.data[index].maxSalary} /month",
-                            contractTime:
-                                snapshot.data[index].contractTime.toString(),
-                            contractType:
-                                snapshot.data[index].contractType ?? "hybrid",
+                                      snapshot.data!.elementAt(index)),
+                                ),
+                              ),
+                            },
+                            child: JobCard(
+                              snapshot.data!.elementAt(index),
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        return const Text('No Jobs Posted');
+                      }
                     } else {
-                      return const Text('No Jobs Posted');
+                      return Text('State: ${snapshot.connectionState}');
                     }
-                  } else {
-                    return Text('State: ${snapshot.connectionState}');
-                  }
-                },
-              )),
+                  },
+                ),
+              ),
             ),
             // Center(child: Text("Hire Me")),
           ],

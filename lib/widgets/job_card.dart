@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hire_me/models/_index.dart';
 
 class JobCard extends StatelessWidget {
-  final String? title,
-      company,
-      salaryRange,
-      contractType,
-      contractTime,
-      location;
-  const JobCard({
-    super.key,
-    this.contractType,
-    this.salaryRange,
-    this.company,
-    this.title,
-    this.contractTime,
-    this.location,
-  });
+  final Job job;
+  const JobCard(this.job, {super.key});
 
-  _buildChip(text) {
+  _buildChip(String? text) {
+    if (text == null) return const SizedBox();
     return Container(
       padding: const EdgeInsets.all(5.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -31,7 +20,7 @@ class JobCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final abb = company.toString().split(" ").first;
+    final abb = job.company.toString().split(" ").first;
     return Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 15.0,
@@ -59,11 +48,11 @@ class JobCard extends StatelessWidget {
                 child: Text(abb),
               ),
               title: Text(
-                title.toString(),
+                job.title.toString(),
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              subtitle: Text(company.toString()),
+              subtitle: Text(job.company.toString()),
               trailing: const Icon(
                 CupertinoIcons.bookmark,
                 size: 20,
@@ -77,7 +66,7 @@ class JobCard extends StatelessWidget {
                 height: 8,
               ),
               Text(
-                location.toString(),
+                job.location.toString(),
                 style: const TextStyle(
                   fontSize: 17,
                 ),
@@ -86,7 +75,7 @@ class JobCard extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                salaryRange.toString(),
+                "\$ ${job.minSalary} - ${job.maxSalary} /month",
                 style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 17,
@@ -99,8 +88,8 @@ class JobCard extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 children: [
-                  _buildChip(contractTime),
-                  _buildChip(contractType),
+                  _buildChip(job.contractTime),
+                  _buildChip(job.contractType ?? "hybrid"),
                 ],
               )
             ])

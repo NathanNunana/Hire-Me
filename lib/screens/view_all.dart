@@ -45,28 +45,10 @@ class ViewAll extends StatelessWidget {
                       context,
                       CupertinoPageRoute(
                         builder: (context) => JobDescription(
-                          title: provider.jobs[index].title.toString(),
-                          company: provider.jobs[index].company.toString(),
-                          location: provider.jobs[index].location.toString(),
-                          salaryRange:
-                              "\$ ${provider.jobs[index].minSalary} - ${provider.jobs[index].maxSalary} /month",
-                          contractTime:
-                              provider.jobs[index].contractTime.toString(),
-                          contractType:
-                              provider.jobs[index].contractType ?? "hybrid",
-                          description:
-                              provider.jobs[index].description.toString(),
+                          provider.jobs.elementAt(index),
                         ),
                       )),
-                  child: JobCard(
-                    title: provider.jobs[index].title.toString(),
-                    company: provider.jobs[index].company.toString(),
-                    location: provider.jobs[index].location.toString(),
-                    salaryRange:
-                        "\$ ${provider.jobs[index].minSalary} - ${provider.jobs[index].maxSalary} /month",
-                    contractTime: provider.jobs[index].contractTime.toString(),
-                    contractType: provider.jobs[index].contractType ?? "hybrid",
-                  ),
+                  child: JobCard(provider.jobs.elementAt(index)),
                 ),
                 itemCount:
                     provider.jobs.length >= 50 ? 50 : provider.jobs.length,
