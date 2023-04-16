@@ -5,9 +5,7 @@ class AppRouter {
   static const String initRoute = "/";
   static const String homeRoute = "/home";
   static const String onboardingRoute = "/onboarding";
-  static const String detailsRoute = "/details";
   static const String editProfile = "/editProfile";
-  static const String submitRoute = "/submitRoute";
   static const String appliedRoute = "/appliedRoute";
   static const String viewAllRoute = "/viewAll";
   static const String registerRoute = "/register";
@@ -24,16 +22,12 @@ class AppRouter {
         return _route(const LandingScreen());
       case onboardingRoute:
         return _route(const OnboardingScreen());
-      case detailsRoute:
-        return _route(const JobDescription());
       case editProfile:
         return _route(EditProfile());
       case viewAllRoute:
         return _route(const ViewAll());
       case registerRoute:
         return _route(const Register());
-      case submitRoute:
-        return _route(const SubmitApplication());
       case appliedRoute:
         return _route(const AppliedJobs());
       default:

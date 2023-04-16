@@ -4,8 +4,8 @@ import 'package:hire_me/providers/_index.dart';
 import 'package:provider/provider.dart';
 
 class SubmitApplication extends StatefulWidget {
-  final String? jobId;
-  const SubmitApplication({super.key, this.jobId});
+  final int jobId;
+  const SubmitApplication({super.key, required this.jobId});
 
   @override
   State<SubmitApplication> createState() => _SubmitApplicationState();
@@ -24,13 +24,7 @@ class _SubmitApplicationState extends State<SubmitApplication> {
     );
     Widget continueButton = TextButton(
       onPressed: () async {
-        print(userId);
-        print(applicationId);
-        print(jobId);
-        final res = await context
-            .read<JobProvider>()
-            .apply(userId, applicationId, jobId);
-        print(res);
+        final res = await context.read<JobProvider>().apply(jobId);
         // showSuccessDialog();
       },
       child: const Text("Yes"),
@@ -53,11 +47,8 @@ class _SubmitApplicationState extends State<SubmitApplication> {
 
   @override
   Widget build(BuildContext context) {
-    final data = context.read<JobProvider>().data;
     final user = context.read<AuthProvider>().user;
-    final len = data!.length - 1;
-    List skills = data[len]['skills'];
-    print(data);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -78,248 +69,265 @@ class _SubmitApplicationState extends State<SubmitApplication> {
         child: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black12,
-                      ),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Column(
+            child: FutureBuilder(
+                future: context.read<AuthProvider>().getApplicationInfo(),
+                builder: (context, snap) {
+                  if (snap.hasError) {
+                    print(snap.error);
+                    return const Center(
+                      child: Text("Oops Error"),
+                    );
+                  }
+                  if (!snap.hasData) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
+                    );
+                  }
+
+                  final data = snap.data as Map<String, dynamic>;
+                  return Column(
                     children: [
-                      const ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          color: Colors.blue,
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black12,
+                            ),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Column(
+                          children: [
+                            const ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                'Contact Information',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 0),
+                              child: Divider(),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.email),
+                              title: Text(data['email']),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.phone),
+                              title: Text(user!.email ?? ""),
+                            ),
+                          ],
                         ),
-                        title: Text(
-                          'Contact Information',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black12,
+                            ),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const ListTile(
+                              leading: Icon(
+                                CupertinoIcons.book,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                'Education',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 0),
+                              child: Divider(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 5),
+                              child: Text(
+                                data['education'],
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            )
+                          ],
                         ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                       ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                        child: Divider(),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.email),
-                        title: Text(data[len]['email']),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.phone),
-                        title: Text(data[len]['phone']),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black12,
-                      ),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const ListTile(
-                        leading: Icon(
-                          CupertinoIcons.book,
-                          color: Colors.blue,
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black12,
+                            ),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const ListTile(
+                              leading: Icon(
+                                CupertinoIcons.briefcase,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                'Skills',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 0),
+                              child: Divider(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 5),
+                              child: Wrap(
+                                spacing: 10,
+                                children: (data["skills"] as List)
+                                    .map((e) => Chip(label: Text(e.toString())))
+                                    .toList(),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            )
+                          ],
                         ),
-                        title: Text(
-                          'Education',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black12,
+                            ),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const ListTile(
+                              leading: Icon(
+                                CupertinoIcons.calendar,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                'Experience',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 0),
+                              child: Divider(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 5),
+                              child: Text(
+                                "${data['experience']} years",
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            )
+                          ],
                         ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                       ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                        child: Divider(),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5),
-                        child: Text(
-                          data[len]['education'],
-                          style: const TextStyle(fontSize: 18),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black12,
+                            ),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const ListTile(
+                              leading: Icon(
+                                CupertinoIcons.chart_pie,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                'Expected Salary',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 0),
+                              child: Divider(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 5),
+                              child: Text(
+                                data['salary_range'],
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(15),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          onPressed: () {
+                            showAlertDialog(
+                                user.id,
+                                int.parse(data['id'].toString()),
+                                int.parse(widget.jobId.toString()));
+                          },
+                          child: const Text("Submit"),
                         ),
                       ),
                       const SizedBox(
                         height: 10,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black12,
-                      ),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const ListTile(
-                        leading: Icon(
-                          CupertinoIcons.briefcase,
-                          color: Colors.blue,
-                        ),
-                        title: Text(
-                          'Skills',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                        child: Divider(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5),
-                        child: Wrap(
-                          spacing: 10,
-                          children: skills
-                              .map((e) => Chip(label: Text(e.toString())))
-                              .toList(),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black12,
-                      ),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const ListTile(
-                        leading: Icon(
-                          CupertinoIcons.calendar,
-                          color: Colors.blue,
-                        ),
-                        title: Text(
-                          'Experience',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                        child: Divider(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5),
-                        child: Text(
-                          "${data[len]['experience']} years",
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black12,
-                      ),
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const ListTile(
-                        leading: Icon(
-                          CupertinoIcons.chart_pie,
-                          color: Colors.blue,
-                        ),
-                        title: Text(
-                          'Expected Salary',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                        child: Divider(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5),
-                        child: Text(
-                          data[len]['salary_range'],
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    onPressed: () {
-                      showAlertDialog(
-                          user!.id,
-                          int.parse(data[len]['id'].toString()),
-                          int.parse(widget.jobId.toString()));
-                    },
-                    child: const Text("Submit"),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
+                  );
+                }),
           ),
         ),
       ),

@@ -62,25 +62,10 @@ class Search extends SearchDelegate {
         onTap: () => Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) => JobDescription(
-                title: suggestions[index].title.toString(),
-                company: suggestions[index].company.toString(),
-                location: suggestions[index].location.toString(),
-                salaryRange:
-                    "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-                contractTime: suggestions[index].contractTime.toString(),
-                contractType: suggestions[index].contractType ?? "hybrid",
-                description: suggestions[index].description.toString(),
-              ),
+              builder: (context) =>
+                  JobDescription(suggestions.elementAt(index)),
             )),
-        child: JobCard(
-            title: suggestions[index].title.toString(),
-            location: suggestions[index].location.toString(),
-            contractTime: suggestions[index].contractTime.toString(),
-            contractType: suggestions[index].contractType.toString(),
-            salaryRange:
-                "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-            company: suggestions[index].company.toString()),
+        child: JobCard(suggestions.elementAt(index)),
       ),
     );
   }
@@ -100,26 +85,10 @@ class Search extends SearchDelegate {
         onTap: () => Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) => JobDescription(
-                title: suggestions[index].title.toString(),
-                company: suggestions[index].company.toString(),
-                location: suggestions[index].location.toString(),
-                salaryRange:
-                    "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-                contractTime: suggestions[index].contractTime.toString(),
-                contractType: suggestions[index].contractType ?? "hybrid",
-                description: suggestions[index].description.toString(),
-                jobId: suggestions[index].jobId,
-              ),
+              builder: (context) =>
+                  JobDescription(suggestions.elementAt(index)),
             )),
-        child: JobCard(
-            title: suggestions[index].title.toString(),
-            location: suggestions[index].location.toString(),
-            contractTime: suggestions[index].contractTime.toString(),
-            contractType: suggestions[index].contractType.toString(),
-            salaryRange:
-                "\$ ${suggestions[index].minSalary} - ${suggestions[index].maxSalary} /month",
-            company: suggestions[index].company.toString()),
+        child: JobCard(suggestions.elementAt(index)),
       ),
     );
   }

@@ -4,18 +4,27 @@ import 'package:hire_me/widgets/search_bar.dart';
 import 'package:hire_me/widgets/job_card.dart';
 import 'package:provider/provider.dart';
 
-class SavedJobs extends StatelessWidget {
+class SavedJobs extends StatefulWidget {
   const SavedJobs({super.key});
 
   @override
+  State<SavedJobs> createState() => _SavedJobsState();
+}
+
+class _SavedJobsState extends State<SavedJobs> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.microtask(() {
+        context.read<AuthProvider>().getSavedJobs(true);
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final job = context.read<JobProvider>().jobs;
-    final auth = context.read<AuthProvider>();
-    List filteredJobs = job
-        .where(((element) => auth.user!.userMetadata!["jobId"]
-            .contains(element.jobId.toString())))
-        .toList();
-    print("$filteredJobs ${auth.user!.userMetadata!['jobId']}");
+    final auth = context.watch<AuthProvider>();
     return Column(
       children: [
         const ListTile(
@@ -30,15 +39,9 @@ class SavedJobs extends StatelessWidget {
             child: SizedBox(
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
-            itemCount: filteredJobs.length,
+            itemCount: auth.savedJobs.length,
             itemBuilder: (context, index) => JobCard(
-              company: filteredJobs[index].company.toString(),
-              contractTime: filteredJobs[index].contractTime.toString(),
-              contractType: filteredJobs[index].contractType.toString(),
-              location: filteredJobs[index].location.toString(),
-              salaryRange:
-                  "\$ ${filteredJobs[index].minSalary} - ${filteredJobs[index].maxSalary} /month",
-              title: filteredJobs[index].title.toString(),
+              auth.savedJobs.elementAt(index),
             ),
           ),
         )),

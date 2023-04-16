@@ -24,16 +24,13 @@ class _SignInState extends State<SignIn> {
       final res =
           await auth.signIn(_emailController.text, _passwordController.text);
       await Hive.openBox('hireme');
-      final box = Hive.box('hireme');
-      bool seen = box.get('seen') ?? false;
-
       if (res) {
-        print(seen);
-        if (!seen) {
-          nav.pushReplacementNamed(AppRouter.onboardingRoute);
-        } else {
-          await box.put('seen', true);
+        bool hasInfo = await auth.hasAppInfo();
+        debugPrint("hasInfo == $hasInfo");
+        if (hasInfo) {
           nav.pushReplacementNamed(AppRouter.homeRoute);
+        } else {
+          nav.pushReplacementNamed(AppRouter.onboardingRoute);
         }
       } else {
         snackbar.showSnackBar(const SnackBar(content: Text("Sign in Failed!")));

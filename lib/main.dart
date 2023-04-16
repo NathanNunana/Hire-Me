@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hire_me/models/_index.dart';
 import 'package:hire_me/providers/_index.dart';
 import 'package:hire_me/services/_index.dart';
 import 'package:hire_me/utils/_index.dart';
@@ -27,8 +28,17 @@ void main() async {
   return runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => JobProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, JobProvider>(
+          create: (context) => JobProvider(),
+          update: (context, auth, previous) {
+            if (previous == null) {
+              return JobProvider(auth);
+            }
+            previous.auth = auth;
+            return previous;
+          },
+        ),
       ],
       // providers: Singleton.registerProvider(),
       child: const HireMe(),
